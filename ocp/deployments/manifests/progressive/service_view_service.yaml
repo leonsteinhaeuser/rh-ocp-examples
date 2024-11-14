@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: view-service
+  labels: &labels
+    app.kubernetes.io/name: view-service
+    app.kubernetes.io/instance: view-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservies-demo
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector: *labels
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: view-service-canary
+  labels: &labels
+    app.kubernetes.io/name: view-service
+    app.kubernetes.io/instance: view-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservies-demo
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector: *labels

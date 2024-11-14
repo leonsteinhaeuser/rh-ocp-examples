@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: number-service
+  labels: &labels
+    app.kubernetes.io/name: number-service
+    app.kubernetes.io/instance: number-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservies-demo
+spec:
+  podSelector:
+    matchLabels: *labels
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: view-service
+              app.kubernetes.io/instance: view-service
+              app.kubernetes.io/component: api
+              app.kubernetes.io/part-of: microservies-demo

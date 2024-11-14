@@ -1,0 +1,63 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: view-service
+  labels: &labels
+    app.kubernetes.io/name: view-service
+    app.kubernetes.io/instance: view-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservies-demo
+spec:
+  replicas: 3
+  strategy:
+    canary:
+      canaryService: view-service-canary
+      stableService: view-service
+      trafficRouting:
+        plugins:
+          argoproj-labs/openshift:
+            routes:
+              - view-service
+      steps:
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 40
+      - pause: {duration: 45}
+      - setWeight: 60
+      - pause: {duration: 20}
+      - setWeight: 80
+      - pause: {duration: 10}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels: *labels
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      securityContext:
+        runAsUser: 65535
+        runAsGroup: 65535
+      automountServiceAccountToken: false
+      containers:
+        - name: view-service
+          image: ghcr.io/leonsteinhaeuser/rh-ocp-examples-view:main
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NUMBER_SERVICE_URL
+              value: http://number-service.apps-crc.testing
+          resources:
+            limits:
+              cpu: 100m
+              memory: 32Mi
+            requests:
+              cpu: 10m
+              memory: 32Mi
+          securityContext:
+            runAsUser: 65535
+            runAsGroup: 65535
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - all

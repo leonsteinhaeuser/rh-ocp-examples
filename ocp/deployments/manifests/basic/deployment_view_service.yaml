@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: view-service
+  labels: &labels
+    app.kubernetes.io/name: view-service
+    app.kubernetes.io/instance: view-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservies-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *labels
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      securityContext:
+        runAsUser: 65535
+        runAsGroup: 65535
+      automountServiceAccountToken: false
+      containers:
+        - name: view-service
+          image: ghcr.io/leonsteinhaeuser/rh-ocp-examples-view:main
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NUMBER_SERVICE_URL
+              value: http://number-service.apps-crc.testing
+          resources:
+            limits:
+              cpu: 100m
+              memory: 32Mi
+            requests:
+              cpu: 10m
+              memory: 32Mi
+          securityContext:
+            runAsUser: 65535
+            runAsGroup: 65535
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - all
