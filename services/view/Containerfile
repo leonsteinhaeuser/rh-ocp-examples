@@ -1,0 +1,10 @@
+FROM golang:alpine AS builder
+RUN mkdir -p /go/src/app
+WORKDIR /go/src/app
+ADD --chown=65535:65535 . .
+RUN go build -o bin/view
+
+FROM alpine:latest
+COPY --chown=65535:65535 --from=builder /go/src/app/bin/view /view
+USER 65535
+ENTRYPOINT /view
