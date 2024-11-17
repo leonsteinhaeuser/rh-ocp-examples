@@ -22,7 +22,7 @@ cd rh-ocp-examples
 2. Deploy the management app and project
 
 ```bash
-oc apply -f ./
+oc apply --server-side -f ./
 ```
 
 3. Wait for ArgoCD to sync the other project setup manifests stored in the `ocp/deployments` directory
