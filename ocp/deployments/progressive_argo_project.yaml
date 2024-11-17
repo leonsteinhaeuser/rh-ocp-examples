@@ -3,6 +3,8 @@ kind: AppProject
 metadata:
   name: progressive
   namespace: example-application-progressive
+  labels:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   clusterResourceWhitelist:
   - group: '*'

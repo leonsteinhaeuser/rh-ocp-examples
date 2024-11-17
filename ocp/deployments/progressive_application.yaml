@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: progressive
   namespace: example-application-progressive
+  labels:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   destination:
     namespace: example-application-progressive

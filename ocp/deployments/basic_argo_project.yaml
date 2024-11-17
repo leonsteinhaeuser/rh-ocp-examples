@@ -3,6 +3,8 @@ kind: AppProject
 metadata:
   name: basic
   namespace: example-application-basic
+  labels:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   clusterResourceWhitelist:
   - group: '*'
