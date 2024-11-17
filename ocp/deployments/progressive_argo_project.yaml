@@ -2,10 +2,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: progressive
-  namespace: example-application-progressive
   labels:
     argocd.argoproj.io/sync-wave: "0"
 spec:
+  sourceNamespaces:
+    - example-application-progressive
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
@@ -18,4 +19,3 @@ spec:
     kind: '*'
   sourceRepos:
   - git@github.com:leonsteinhaeuser/rh-ocp-examples.git
-status: {}
