@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: progressive
+  namespace: example-application-progressive
+spec:
+  destination:
+    namespace: example-application-progressive
+    server: https://kubernetes.default.svc
+  project: progressive
+  source:
+    directory:
+      jsonnet: {}
+      recurse: true
+    path: ocp/deployments/manifests/progressive
+    repoURL: git@github.com:leonsteinhaeuser/rh-ocp-examples.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m0s
+      limit: 5
+    syncOptions:
+    - PruneLast=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true
