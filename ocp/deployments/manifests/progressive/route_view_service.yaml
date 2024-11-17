@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: api
     app.kubernetes.io/part-of: microservies-demo
 spec:
-  host: view-service.apps-crc.testing
+  host: view-service-2.apps-crc.testing
   port:
     targetPort: 8080
   tls:

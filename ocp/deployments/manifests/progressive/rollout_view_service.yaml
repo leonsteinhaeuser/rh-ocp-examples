@@ -45,7 +45,7 @@ spec:
             - containerPort: 8080
           env:
             - name: NUMBER_SERVICE_URL
-              value: http://number-service.apps-crc.testing
+              value: http://number-service-2.apps-crc.testing
           resources:
             limits:
               cpu: 100m
