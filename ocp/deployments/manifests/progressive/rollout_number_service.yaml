@@ -43,6 +43,8 @@ spec:
           image: ghcr.io/leonsteinhaeuser/rh-ocp-examples-number:main
           ports:
             - containerPort: 8081
+              name: http
+              protocol: TCP
           resources:
             limits:
               cpu: 100m

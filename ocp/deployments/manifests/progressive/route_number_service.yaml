@@ -10,7 +10,7 @@ metadata:
 spec:
   host: number-service-2.apps-crc.testing
   port:
-    targetPort: 8081
+    targetPort: http
   to:
     kind: Service
     name: number-service

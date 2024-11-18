@@ -10,7 +10,7 @@ metadata:
 spec:
   host: view-service-2.apps-crc.testing
   port:
-    targetPort: 8080
+    targetPort: http
   tls:
     insecureEdgeTerminationPolicy: None
     termination: passthrough

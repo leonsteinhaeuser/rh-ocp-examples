@@ -24,6 +24,8 @@ spec:
           image: ghcr.io/leonsteinhaeuser/rh-ocp-examples-view:main
           ports:
             - containerPort: 8080
+              name: http
+              protocol: TCP
           env:
             - name: NUMBER_SERVICE_URL
               value: http://number-service.apps-crc.testing
