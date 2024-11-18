@@ -1,0 +1,18 @@
+{{- if .Values.route.enabled }}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "view-service.fullname" . }}
+  labels:
+    {{- include "view-service.labels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.route.annotations | nindent 4 }}
+spec:
+  host: {{ .Values.route.host }}
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: view-service
+    weight: 100
+{{- end }}
