@@ -19,6 +19,3 @@ spec:
     - kind: Service
       name: number-service-canary
       weight: 0
-  endpointPublishingStrategy:
-    scope: Internal
-    type: LoadBalancerService
