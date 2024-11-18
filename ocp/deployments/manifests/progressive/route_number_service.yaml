@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: api
     app.kubernetes.io/part-of: microservices-demo
 spec:
-  host: number-service-2.apps-crc.testing
+  host: number-service-2.localhost
   port:
     targetPort: http
   to:

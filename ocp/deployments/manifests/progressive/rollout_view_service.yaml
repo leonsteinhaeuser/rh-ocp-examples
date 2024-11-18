@@ -48,7 +48,7 @@ spec:
               protocol: TCP
           env:
             - name: NUMBER_SERVICE_URL
-              value: http://number-service-2.apps-crc.testing
+              value: http://number-service-2.localhost
           resources:
             limits:
               cpu: 100m
