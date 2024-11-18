@@ -8,12 +8,10 @@ metadata:
     app.kubernetes.io/component: api
     app.kubernetes.io/part-of: microservies-demo
 spec:
-  host: view-service.apps-crc.testing
+  host: view-service.localhost
   port:
     targetPort: http
-  tls:
-    insecureEdgeTerminationPolicy: None
-    termination: passthrough
   to:
     kind: Service
     name: view-service
+    weight: 100
