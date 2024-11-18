@@ -5,9 +5,19 @@ Red Hat OpenShift application deployment examples.
 ## Repository structure
 
 ```txt
-- services        # Services
-  - number        # A demo service that generates a random number
-  - view          # A demo service that displays the random number
+- services                # Services
+  - number                # A demo service that generates a random number (Go code)
+  - view                  # A demo service that displays the random number (Go code)
+- ocp                     # OpenShift deployment and management resources
+  - deployments           # ArgoCD Application resources for the services
+    - helm                ä Helm value files
+      - basic             # Helm value files for the basic deployment via Helm chart
+    - manifests           # Kubernetes manifests for the services (different deployment strategies)
+      - basic             # Kubernetes manifests for the basic deployment
+      - progressive       # Kubernetes manifests for the progressive deployment
+  - helm-charts           # Helm charts for the services
+    - number-service      # Helm chart for the number service
+    - view-service        # Helm chart for the view service
 ```
 
 ## Prerequisites
@@ -18,7 +28,7 @@ Red Hat OpenShift application deployment examples.
 
 ## How to deploy
 
-Before we can deploy any of the services, we need to modify our central ArgoCD management application to allow sourcing `Application` resources from other than the `openshift-gitops` namespace. This is necessary because the services are deployed in a separate project, namespace and ArgoCD application.
+Before we can deploy any of the services, we need to modify our central ArgoCD management application to allow sourcing `Application` resources from other than the `openshift-gitops` namespace. This is necessary because the services are deployed in a separate project, namespace and ArgoCD application and by default, ArgoCD only watches the `openshift-gitops` namespace for `Application` resources.
 
 To do this, execute the following patch command:
 
