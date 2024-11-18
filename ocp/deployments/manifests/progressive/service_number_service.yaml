@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: number-service
     app.kubernetes.io/instance: number-service
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: microservies-demo
+    app.kubernetes.io/part-of: microservices-demo
 spec:
   ports:
     - port: 8081
@@ -23,7 +23,7 @@ metadata:
     app.kubernetes.io/name: number-service
     app.kubernetes.io/instance: number-service
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: microservies-demo
+    app.kubernetes.io/part-of: microservices-demo
 spec:
   ports:
     - port: 8081

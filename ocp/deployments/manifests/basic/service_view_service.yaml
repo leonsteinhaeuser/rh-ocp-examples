@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/name: view-service
     app.kubernetes.io/instance: view-service
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: microservies-demo
+    app.kubernetes.io/part-of: microservices-demo
 spec:
   ports:
     - port: 8080
