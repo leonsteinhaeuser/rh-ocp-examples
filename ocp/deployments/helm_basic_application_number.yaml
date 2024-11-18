@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: number-service
+  namespace: example-application-helm-basic
+  labels:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  destination:
+    namespace: example-application-helm-basic
+    server: https://kubernetes.default.svc
+  project: helm-basic
+  source:
+    repoURL: git@github.com:leonsteinhaeuser/rh-ocp-examples.git
+    targetRevision: HEAD
+    path: ocp/helm-charts/number-service
+    helm:
+      valueFiles:
+        - ../deployments/helm/basic/number-service.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m0s
+      limit: 5
+    syncOptions:
+    - PruneLast=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true

@@ -15,7 +15,13 @@ spec:
     namespace: example-application-basic
     server: https://kubernetes.default.svc
   - name: in-cluster
+    namespace: example-application-helm-basic
+    server: https://kubernetes.default.svc
+  - name: in-cluster
     namespace: example-application-progressive
+    server: https://kubernetes.default.svc
+  - name: in-cluster
+    namespace: example-application-helm-progressive
     server: https://kubernetes.default.svc
   namespaceResourceWhitelist:
   - group: '*'

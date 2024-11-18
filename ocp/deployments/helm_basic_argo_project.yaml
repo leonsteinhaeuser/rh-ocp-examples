@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: helm-basic
+  labels:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  sourceNamespaces:
+    - example-application-helm-basic
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - name: in-cluster
+    namespace: example-application-helm-basic
+    server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  sourceRepos:
+  - git@github.com:leonsteinhaeuser/rh-ocp-examples.git
