@@ -18,6 +18,9 @@ func init() {
 
 func main() {
 	// add routes
+	http.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
 	http.HandleFunc("GET /number", logMiddleware(getNumber))
 	slog.Info("starting server on port 8081")
 	http.ListenAndServe(":8081", nil)
