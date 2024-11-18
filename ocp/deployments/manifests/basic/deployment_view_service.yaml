@@ -28,7 +28,7 @@ spec:
               protocol: TCP
           env:
             - name: NUMBER_SERVICE_URL
-              value: http://number-service.apps-crc.testing
+              value: http://number-service:8081
           resources:
             limits:
               cpu: 100m
