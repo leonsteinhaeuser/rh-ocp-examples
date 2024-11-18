@@ -5,8 +5,10 @@ metadata:
   name: {{ include "view-service.fullname" . }}
   labels:
     {{- include "view-service.labels" . | nindent 4 }}
+  {{- with .Values.route.annotations }}
   annotations:
     {{- toYaml .Values.route.annotations | nindent 4 }}
+  {{- end }}
 spec:
   host: {{ .Values.route.host }}
   port:
