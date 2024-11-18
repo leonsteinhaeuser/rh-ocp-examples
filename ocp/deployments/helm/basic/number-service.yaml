@@ -1,0 +1,29 @@
+replicaCount: 3
+image:
+  repository: ghcr.io/leonsteinhaeuser/rh-ocp-examples-number
+  pullPolicy: Always
+  tag: main
+
+serviceAccount:
+  automount: false
+
+podSecurityContext:
+  fsGroup: 65535
+  runAsUser: 65535
+  runAsGroup: 65535
+
+securityContext:
+  runAsUser: 65535
+  runAsGroup: 65535
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 32Mi
+  requests:
+    cpu: 10m
+    memory: 32Mi
