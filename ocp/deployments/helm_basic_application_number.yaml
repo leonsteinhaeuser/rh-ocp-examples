@@ -16,7 +16,7 @@ spec:
     path: ocp/helm-charts/number-service
     helm:
       valueFiles:
-        - ../deployments/helm/basic/number-service.yaml
+        - ../../deployments/helm/basic/number-service.yaml
   syncPolicy:
     automated:
       prune: true

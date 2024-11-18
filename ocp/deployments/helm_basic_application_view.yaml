@@ -16,7 +16,7 @@ spec:
     path: ocp/helm-charts/view-service
     helm:
       valueFiles:
-        - ../deployments/helm/basic/view-service.yaml
+        - ../../deployments/helm/basic/view-service.yaml
   syncPolicy:
     automated:
       prune: true
