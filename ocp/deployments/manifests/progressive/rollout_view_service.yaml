@@ -41,6 +41,7 @@ spec:
       containers:
         - name: view-service
           image: ghcr.io/leonsteinhaeuser/rh-ocp-examples-view:main
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
               name: http
