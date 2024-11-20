@@ -1,8 +1,10 @@
 package main
 
 import (
+	_ "embed"
 	"encoding/json"
 	"html/template"
+	"io"
 	"log/slog"
 	"net/http"
 	"os"
@@ -10,6 +12,10 @@ import (
 
 var (
 	envNumberServiceURL = os.Getenv("NUMBER_SERVICE_URL")
+	envStatusServiceURL = os.Getenv("STATUS_SERVICE_URL")
+
+	//go:embed view.html
+	websiteHTML string
 )
 
 func init() {
@@ -25,24 +31,48 @@ func main() {
 	http.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
+	http.HandleFunc("GET /api/v1/status", proxyEndpoint)
 	http.HandleFunc("GET /", logMiddleware(getMain))
 	slog.Info("starting server on port 8080")
 	http.ListenAndServe(":8080", nil)
 }
 
-const (
-	websiteHTML = `<!DOCTYPE html>
-<html>
-	<head>
-		<title>View Service</title>
-	</head>
-	<body>
-		<h1>Hello, World!</h1>
-		<p>This is the view service.</p>
-		<h5>The number you requested is:</h5><p>{{.number}}</p>
-	</body>
-</html>`
-)
+func proxyEndpoint(w http.ResponseWriter, r *http.Request) {
+	req, err := http.NewRequest(r.Method, envStatusServiceURL, r.Body)
+	if err != nil {
+		slog.Error("could not create proxy request", "error", err)
+		http.Error(w, "could not create proxy request", http.StatusInternalServerError)
+		return
+	}
+
+	// Copy headers from the original request
+	for key, values := range r.Header {
+		for _, value := range values {
+			req.Header.Add(key, value)
+		}
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		slog.Error("could not forward request", "error", err)
+		http.Error(w, "could not forward request", http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Copy headers from the response
+	for key, values := range resp.Header {
+		for _, value := range values {
+			w.Header().Add(key, value)
+		}
+	}
+
+	w.WriteHeader(resp.StatusCode)
+	_, err = io.Copy(w, resp.Body)
+	if err != nil {
+		slog.Error("could not copy response body", "error", err)
+	}
+}
 
 var (
 	websiteTemplate = template.Must(template.New("website").Parse(websiteHTML))

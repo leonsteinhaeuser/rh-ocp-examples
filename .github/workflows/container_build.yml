@@ -1,4 +1,4 @@
-name: Docker
+name: build
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -35,6 +35,7 @@ jobs:
         include:
           - service_name: view
           - service_name: number
+          - service_name: status
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
