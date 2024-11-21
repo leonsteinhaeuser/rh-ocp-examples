@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: &name status-service
+  labels: &labels
+    app.kubernetes.io/name: *name
+    app.kubernetes.io/instance: *name
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservices-demo
+spec:
+  selector:
+    matchLabels: *labels
+  mtls:
+    mode: STRICT

@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: &name view-service
+  namespace: &ns example-application-basic-servicemesh
+  labels:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  destination:
+    namespace: *ns
+    server: https://kubernetes.default.svc
+  project: basic-servicemesh
+  source:
+    directory:
+      jsonnet: {}
+      recurse: true
+    path: ocp/deployments/manifests/servicemesh/view_service
+    repoURL: git@github.com:leonsteinhaeuser/rh-ocp-examples.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m0s
+      limit: 5
+    syncOptions:
+    - PruneLast=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true

@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: basic-servicemesh
+  labels:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  sourceNamespaces:
+    - example-application-basic-servicemesh
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - name: in-cluster
+    namespace: example-application-basic-servicemesh
+    server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  sourceRepos:
+  - git@github.com:leonsteinhaeuser/rh-ocp-examples.git
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: &ns example-application-basic-servicemesh
+  labels:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  destination:
+    namespace: *ns
+    server: https://kubernetes.default.svc
+  project: basic-servicemesh
+  source:
+    directory:
+      jsonnet: {}
+      recurse: true
+    path: ocp/deployments/manifests/basic
+    repoURL: git@github.com:leonsteinhaeuser/rh-ocp-examples.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m0s
+      limit: 5
+    syncOptions:
+    - PruneLast=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true

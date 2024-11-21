@@ -15,6 +15,9 @@ spec:
     namespace: example-application-basic
     server: https://kubernetes.default.svc
   - name: in-cluster
+    namespace: example-application-basic-servicemesh
+    server: https://kubernetes.default.svc
+  - name: in-cluster
     namespace: example-application-helm-basic
     server: https://kubernetes.default.svc
   - name: in-cluster

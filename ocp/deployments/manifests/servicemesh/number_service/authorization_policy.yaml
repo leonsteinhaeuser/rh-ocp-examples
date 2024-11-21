@@ -1,0 +1,27 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: &name number-service
+  labels: &labels
+    app.kubernetes.io/name: *name
+    app.kubernetes.io/instance: *name
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservices-demo
+spec:
+  selector:
+    matchLabels: *labels
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            selector:
+              matchLabels:
+                app.kubernetes.io/name: view-service
+                app.kubernetes.io/instance: view-service
+                app.kubernetes.io/component: api
+                app.kubernetes.io/part-of: microservices-demo
+      to:
+        - operation:
+            methods: ["GET"]
+            ports: ["8081"]
+            paths: ["/number"]

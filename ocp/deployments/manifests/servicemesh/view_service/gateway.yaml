@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: view-service
+  labels: &labels
+    app.kubernetes.io/name: view-service
+    app.kubernetes.io/instance: view-service
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/part-of: microservices-demo
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+      hosts:
+        - view-service-mesh.localhost

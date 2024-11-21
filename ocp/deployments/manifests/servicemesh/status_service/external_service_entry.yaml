@@ -1,0 +1,36 @@
+apiVersion: networking.istio.io/v1
+kind: ServiceEntry
+metadata:
+  name: external-svc-redhat-com
+  labels: &labels
+    app.kubernetes.io/name: status-service
+    app.kubernetes.io/instance: status-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservices-demo
+spec:
+  hosts:
+  - www.redhat.com
+  location: MESH_EXTERNAL
+  ports:
+  - number: 80
+    name: example-http
+    protocol: HTTP
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: www-redhat-com
+  labels: &labels
+    app.kubernetes.io/name: status-service
+    app.kubernetes.io/instance: status-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservices-demo
+spec:
+  hosts:
+  - www.redhat.com
+  http:
+  - timeout: 15s
+    route:
+    - destination:
+        host: www.redhat.com
