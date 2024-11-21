@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: rollouts-demo
+  name: &name number-service
   labels: &labels
-    app.kubernetes.io/name: number-service
-    app.kubernetes.io/instance: number-service
+    app.kubernetes.io/name: *name
+    app.kubernetes.io/instance: *name
     app.kubernetes.io/component: api
     app.kubernetes.io/part-of: microservices-demo
 spec:
@@ -12,12 +12,12 @@ spec:
   strategy:
     canary:
       canaryService: number-service-canary
-      stableService: number-service
+      stableService: *name
       trafficRouting:
         plugins:
           argoproj-labs/openshift:
             routes:
-              - number-service
+              - *name
       steps:
       - setWeight: 20
       - pause: {}
@@ -39,7 +39,7 @@ spec:
         runAsGroup: 65535
       automountServiceAccountToken: false
       containers:
-        - name: number-service
+        - name: *name
           image: ghcr.io/leonsteinhaeuser/rh-ocp-examples-number:main
           imagePullPolicy: Always
           ports:
