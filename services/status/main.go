@@ -43,6 +43,11 @@ const (
 )
 
 func init() {
+	if envListenAddress == "" {
+		slog.Warn("LISTEN_ADDRESS is not set, using default value", "default", ":8082")
+		envListenAddress = ":8082"
+	}
+
 	// Parse the envExternalServicesToWatch and populate the externalServicesToWatch map.
 	// If the envExternalServicesToWatch is empty, then we should watch the default services.
 	if envExternalServicesToWatch == "" {

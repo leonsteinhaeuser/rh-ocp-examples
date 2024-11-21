@@ -13,6 +13,7 @@ import (
 var (
 	envNumberServiceURL = os.Getenv("NUMBER_SERVICE_URL")
 	envStatusServiceURL = os.Getenv("STATUS_SERVICE_URL")
+	envListenAddress    = os.Getenv("LISTEN_ADDRESS")
 
 	//go:embed view.html
 	websiteHTML string
@@ -24,6 +25,11 @@ func init() {
 		Level:     slog.LevelDebug,
 	}))
 	slog.SetDefault(logger)
+
+	if envListenAddress == "" {
+		slog.Warn("LISTEN_ADDRESS is not set, using default value", "default", ":8080")
+		envListenAddress = ":8080"
+	}
 }
 
 func main() {
@@ -33,8 +39,8 @@ func main() {
 	})
 	http.HandleFunc("GET /api/v1/status", proxyEndpoint)
 	http.HandleFunc("GET /", logMiddleware(getMain))
-	slog.Info("starting server on port 8080")
-	http.ListenAndServe(":8080", nil)
+	slog.Info("starting server on port: " + envListenAddress)
+	http.ListenAndServe(envListenAddress, nil)
 }
 
 func proxyEndpoint(w http.ResponseWriter, r *http.Request) {
