@@ -43,6 +43,12 @@ const (
 )
 
 func init() {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		AddSource: true,
+		Level:     slog.LevelDebug,
+	}))
+	slog.SetDefault(logger)
+
 	if envListenAddress == "" {
 		slog.Warn("LISTEN_ADDRESS is not set, using default value", "default", ":8082")
 		envListenAddress = ":8082"
@@ -106,6 +112,7 @@ func main() {
 		slog.Error("failed to start the server", "error", err)
 		os.Exit(1)
 	}
+	slog.Warn("server stopped")
 }
 
 func watcher(ctx context.Context) {

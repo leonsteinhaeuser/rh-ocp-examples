@@ -40,7 +40,12 @@ func main() {
 	http.HandleFunc("GET /api/v1/status", proxyEndpoint)
 	http.HandleFunc("GET /", logMiddleware(getMain))
 	slog.Info("starting server on port: " + envListenAddress)
-	http.ListenAndServe(envListenAddress, nil)
+	err := http.ListenAndServe(envListenAddress, nil)
+	if err != nil {
+		slog.Error("failed to start the server", "error", err)
+		os.Exit(1)
+	}
+	slog.Warn("server stopped")
 }
 
 func proxyEndpoint(w http.ResponseWriter, r *http.Request) {

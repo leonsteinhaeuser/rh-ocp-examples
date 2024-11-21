@@ -32,7 +32,12 @@ func main() {
 	})
 	http.HandleFunc("GET /number", logMiddleware(getNumber))
 	slog.Info("starting server on: " + envListenAddress)
-	http.ListenAndServe(envListenAddress, nil)
+	err := http.ListenAndServe(envListenAddress, nil)
+	if err != nil {
+		slog.Error("failed to start the server", "error", err)
+		os.Exit(1)
+	}
+	slog.Warn("server stopped")
 }
 
 func logMiddleware(next http.HandlerFunc) http.HandlerFunc {
