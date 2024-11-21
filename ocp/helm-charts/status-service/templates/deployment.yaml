@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "view-service.fullname" . }}
+  name: {{ include "status-service.fullname" . }}
   labels:
-    {{- include "view-service.labels" . | nindent 4 }}
+    {{- include "status-service.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "view-service.selectorLabels" . | nindent 6 }}
+      {{- include "status-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "view-service.labels" . | nindent 8 }}
+        {{- include "status-service.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,7 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "view-service.serviceAccountName" . }}
+      serviceAccountName: {{ include "status-service.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -36,11 +36,6 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            - name: NUMBER_SERVICE_URL
-              value: {{ .Values.config.numberServiceAddress }}
-            - name: STATUS_SERVICE_URL
-              value: {{ .Values.config.statusServiceAddress }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

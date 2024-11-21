@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: status-service
+  labels: &labels
+    app.kubernetes.io/name: status-service
+    app.kubernetes.io/instance: status-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservices-demo
+spec:
+  ports:
+    - port: 8081
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector: *labels
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: status-service-canary
+  labels: &labels
+    app.kubernetes.io/name: status-service
+    app.kubernetes.io/instance: status-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservices-demo
+spec:
+  ports:
+    - port: 8081
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector: *labels

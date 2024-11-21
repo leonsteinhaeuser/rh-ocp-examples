@@ -1,6 +1,6 @@
 replicaCount: 3
 image:
-  repository: ghcr.io/leonsteinhaeuser/rh-ocp-examples-view
+  repository: ghcr.io/leonsteinhaeuser/rh-ocp-examples-number
   pullPolicy: Always
   tag: main
 
@@ -27,11 +27,3 @@ resources:
   requests:
     cpu: 10m
     memory: 32Mi
-
-route:
-  enabled: true
-  host: view-service-helm-basic.localhost
-
-config:
-  numberServiceAddress: "http://number-service:8081"
-  statusServiceAddress: "http://status-service:8082/status"

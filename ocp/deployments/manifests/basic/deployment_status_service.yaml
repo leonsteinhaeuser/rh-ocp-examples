@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: view-service
+  name: status-service
   labels: &labels
-    app.kubernetes.io/name: view-service
-    app.kubernetes.io/instance: view-service
+    app.kubernetes.io/name: status-service
+    app.kubernetes.io/instance: status-service
     app.kubernetes.io/component: api
     app.kubernetes.io/part-of: microservices-demo
 spec:
@@ -20,18 +20,13 @@ spec:
         runAsGroup: 65535
       automountServiceAccountToken: false
       containers:
-        - name: view-service
-          image: ghcr.io/leonsteinhaeuser/rh-ocp-examples-view:main
+        - name: status-service
+          image: ghcr.io/leonsteinhaeuser/rh-ocp-examples-status:main
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - containerPort: 8082
               name: http
               protocol: TCP
-          env:
-            - name: NUMBER_SERVICE_URL
-              value: http://number-service:8081
-            - name: STATUS_SERVICE_URL
-              value: http://status-service:8082/status
           resources:
             limits:
               cpu: 100m

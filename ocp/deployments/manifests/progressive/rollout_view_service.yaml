@@ -49,6 +49,8 @@ spec:
           env:
             - name: NUMBER_SERVICE_URL
               value: http://number-service-2.localhost
+            - name: STATUS_SERVICE_URL
+              value: http://status-service-2.localhost/status
           resources:
             limits:
               cpu: 100m

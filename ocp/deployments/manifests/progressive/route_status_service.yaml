@@ -1,0 +1,21 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: status-service
+  labels:
+    app.kubernetes.io/name: status-service
+    app.kubernetes.io/instance: status-service
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: microservices-demo
+spec:
+  host: status-service-2.localhost
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: status-service
+    weight: 100
+  alternateBackends:
+    - kind: Service
+      name: status-service-canary
+      weight: 0
