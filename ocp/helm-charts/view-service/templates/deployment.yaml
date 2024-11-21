@@ -41,16 +41,23 @@ spec:
               value: {{ .Values.config.numberServiceAddress }}
             - name: STATUS_SERVICE_URL
               value: {{ .Values.config.statusServiceAddress }}
+          env:
+            - name: LISTEN_ADDRESS
+              value: ":{{ .Values.service.port }}"
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            httpGet:
+              path: /healthz
+              port: http
           {{- with .Values.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
