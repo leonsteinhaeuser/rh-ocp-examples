@@ -11,6 +11,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "-1"
   labels:
     argocd.argoproj.io/managed-by: openshift-gitops
+    istio-injection: enabled
   name: example-application-basic-servicemesh
 ---
 apiVersion: argoproj.io/v1alpha1
