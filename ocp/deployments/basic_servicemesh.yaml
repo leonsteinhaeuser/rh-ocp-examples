@@ -1,3 +1,18 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: ""
+    openshift.io/display-name: ""
+    openshift.io/requester: kubeadmin
+    openshift.io/sa.scc.mcs: s0:c26,c20
+    openshift.io/sa.scc.supplemental-groups: 65535/10000
+    openshift.io/sa.scc.uid-range: 65535/10000
+    argocd.argoproj.io/sync-wave: "-1"
+  labels:
+    argocd.argoproj.io/managed-by: openshift-gitops
+  name: example-application-basic-servicemesh
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -33,10 +48,7 @@ spec:
     server: https://kubernetes.default.svc
   project: basic-servicemesh
   source:
-    directory:
-      jsonnet: {}
-      recurse: true
-    path: ocp/deployments/manifests/basic
+    path: ocp/deployments/manifests/servicemesh
     repoURL: git@github.com:leonsteinhaeuser/rh-ocp-examples.git
     targetRevision: HEAD
   syncPolicy:
