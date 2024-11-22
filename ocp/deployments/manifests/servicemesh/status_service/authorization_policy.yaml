@@ -14,12 +14,8 @@ spec:
   rules:
     - from:
         - source:
-            selector:
-              matchLabels:
-                app.kubernetes.io/name: view-service
-                app.kubernetes.io/instance: view-service
-                app.kubernetes.io/component: api
-                app.kubernetes.io/part-of: microservices-demo
+            principals:
+              - cluster.local/ns/example-application-basic-servicemesh/sa/view-service
       to:
         - operation:
             methods: ["GET"]
