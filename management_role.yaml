@@ -11,3 +11,19 @@ rules:
   - 'applicationsets'
   verbs:
   - '*'
+- apiGroups:
+    - security.istio.io
+  resources:
+    - peerauthentications
+    - authorizationpolicies
+  verbs:
+    - '*'
+- apiGroups:
+    - networking.istio.io
+  resources:
+    - destinationrules
+    - gateways
+    - virtualservices
+    - serviceentries
+  verbs:
+    - '*'
