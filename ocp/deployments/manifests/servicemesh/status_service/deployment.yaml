@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/part-of: microservices-demo
     app.kubernetes.io/version: v1
     sidecar.istio.io/inject: "true"
+    app: *name
+    version: v1
 spec:
   replicas: 1
   selector:
