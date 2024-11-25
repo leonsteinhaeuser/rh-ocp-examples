@@ -96,10 +96,10 @@ func init() {
 }
 
 func main() {
-	http.HandleFunc("GET /status", statusHandler)
-	http.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("GET /status", logMiddleware(statusHandler))
+	http.HandleFunc("GET /healthz", logMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-	})
+	}))
 
 	ctx, cf := context.WithCancel(context.Background())
 	defer cf()
@@ -113,6 +113,13 @@ func main() {
 		os.Exit(1)
 	}
 	slog.Warn("server stopped")
+}
+
+func logMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		slog.DebugContext(r.Context(), "incoming request", "method", r.Method, "url", r.URL.Path, "remote", r.RemoteAddr)
+		next(w, r)
+	}
 }
 
 func watcher(ctx context.Context) {

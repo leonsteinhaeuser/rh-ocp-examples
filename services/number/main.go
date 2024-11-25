@@ -27,9 +27,9 @@ func init() {
 
 func main() {
 	// add routes
-	http.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("GET /healthz", logMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-	})
+	}))
 	http.HandleFunc("GET /number", logMiddleware(getNumber))
 	slog.Info("starting server on: " + envListenAddress)
 	err := http.ListenAndServe(envListenAddress, nil)

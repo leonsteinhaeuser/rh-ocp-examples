@@ -34,10 +34,10 @@ func init() {
 
 func main() {
 	// add routes
-	http.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("GET /healthz", logMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-	})
-	http.HandleFunc("GET /api/v1/status", proxyEndpoint)
+	}))
+	http.HandleFunc("GET /api/v1/status", logMiddleware(proxyEndpoint))
 	http.HandleFunc("GET /", logMiddleware(getMain))
 	slog.Info("starting server on port: " + envListenAddress)
 	err := http.ListenAndServe(envListenAddress, nil)
