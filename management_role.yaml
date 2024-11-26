@@ -27,3 +27,10 @@ rules:
     - serviceentries
   verbs:
     - '*'
+- apiGroups:
+    - cert-manager.io
+  resources:
+    - issuers
+    - certificates
+  verbs:
+    - '*'
