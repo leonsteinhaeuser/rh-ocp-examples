@@ -15,7 +15,5 @@ spec:
         number: 443
         name: https
         protocol: HTTPS
-      tls:
-        mode: SIMPLE
       hosts:
         - view-service-mesh.localhost
