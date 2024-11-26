@@ -7,6 +7,7 @@ Red Hat OpenShift application deployment examples.
 ```txt
 - services                # Services
   - number                # A demo service that generates a random number (Go code)
+  - status                # A demo service that returns the status of the upstream service (Go code)
   - view                  # A demo service that displays the random number (Go code)
 - ocp                     # OpenShift deployment and management resources
   - deployments           # ArgoCD Application resources for the services
@@ -15,8 +16,10 @@ Red Hat OpenShift application deployment examples.
     - manifests           # Kubernetes manifests for the services (different deployment strategies)
       - basic             # Kubernetes manifests for the basic deployment
       - progressive       # Kubernetes manifests for the progressive deployment
+      - servicemesh       # Kubernetes manifests for the application deployment based on the istio service mesh
   - helm-charts           # Helm charts for the services
     - number-service      # Helm chart for the number service
+    - status-service      # Helm chart for the status service
     - view-service        # Helm chart for the view service
 ```
 
