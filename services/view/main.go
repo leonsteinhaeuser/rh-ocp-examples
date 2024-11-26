@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	_ "embed"
 	"encoding/json"
 	"html/template"
@@ -8,6 +9,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 )
 
 var (
@@ -49,13 +51,18 @@ func main() {
 }
 
 func proxyEndpoint(w http.ResponseWriter, r *http.Request) {
-	req, err := http.NewRequest(r.Method, envStatusServiceURL, r.Body)
+	ctx, cf := context.WithTimeout(r.Context(), 10*time.Second)
+	defer cf()
+
+	slog.Debug("preparing proxy request", "method", r.Method, "url", r.URL.Path)
+	req, err := http.NewRequestWithContext(ctx, r.Method, envStatusServiceURL, r.Body)
 	if err != nil {
 		slog.Error("could not create proxy request", "error", err)
 		http.Error(w, "could not create proxy request", http.StatusInternalServerError)
 		return
 	}
 
+	slog.Debug("copying headers from original request")
 	// Copy headers from the original request
 	for key, values := range r.Header {
 		for _, value := range values {
@@ -63,6 +70,7 @@ func proxyEndpoint(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	slog.Debug("sending proxy request")
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		slog.Error("could not forward request", "error", err)
@@ -71,6 +79,7 @@ func proxyEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
+	slog.Debug("copying response headers")
 	// Copy headers from the response
 	for key, values := range resp.Header {
 		for _, value := range values {
@@ -78,6 +87,7 @@ func proxyEndpoint(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	slog.Debug("writing response")
 	w.WriteHeader(resp.StatusCode)
 	_, err = io.Copy(w, resp.Body)
 	if err != nil {
