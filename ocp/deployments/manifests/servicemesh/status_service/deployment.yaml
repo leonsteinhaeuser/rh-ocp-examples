@@ -28,6 +28,9 @@ spec:
         - name: *name
           image: ghcr.io/leonsteinhaeuser/rh-ocp-examples-status:main
           imagePullPolicy: Always
+          env:
+            - name: EXTERNAL_SERVICES_TO_WATCH
+              value: "redhat=http://www-redhat-com:80"
           ports:
             - containerPort: 8082
               name: http
