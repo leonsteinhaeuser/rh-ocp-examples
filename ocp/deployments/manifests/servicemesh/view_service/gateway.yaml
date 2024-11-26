@@ -15,5 +15,8 @@ spec:
         number: 443
         name: https
         protocol: HTTPS
+      tls:
+        httpsRedirect: true
+        credentialName: view-service
       hosts:
         - view-service-mesh.localhost
