@@ -22,7 +22,7 @@ spec:
       securityContext:
         runAsUser: 65535
         runAsGroup: 65535
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       serviceAccountName: *name
       containers:
         - name: *name
