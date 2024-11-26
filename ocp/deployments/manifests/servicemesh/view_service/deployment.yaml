@@ -36,7 +36,7 @@ spec:
             - name: NUMBER_SERVICE_URL
               value: http://number-service:8081
             - name: STATUS_SERVICE_URL
-              value: http://view-service:8082/status
+              value: http://status-service:8082/status
           resources:
             limits:
               cpu: 100m
