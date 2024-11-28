@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: hashicorp
+  labels:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  sourceNamespaces:
+    - hcp-operators
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - name: in-cluster
+    namespace: hcp-operators
+    server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  sourceRepos:
+  - git@github.com:leonsteinhaeuser/rh-ocp-examples.git

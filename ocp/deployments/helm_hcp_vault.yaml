@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hcp-vault
+  namespace: &ns hcp-operators
+  labels:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  destination:
+    namespace: *ns
+    server: https://kubernetes.default.svc
+  project: hashicorp
+  source:
+    chart: vault
+    repoURL: https://helm.releases.hashicorp.com
+    targetRevision: 0.29.1
+    helm:
+      releaseName: hcp-vault
+      valuesObject:
+        global:
+          openshift: true
+        injector:
+          image:
+            repository: "registry.connect.redhat.com/hashicorp/vault-k8s"
+            tag: "1.5.0-ubi"
+          agentImage:
+            repository: "registry.connect.redhat.com/hashicorp/vault"
+            tag: "1.18.1-ubi"
+        server:
+          image:
+            repository: "registry.connect.redhat.com/hashicorp/vault"
+            tag: "1.18.1-ubi"
+          readinessProbe:
+            path: "/v1/sys/health?uninitcode=204"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m0s
+      limit: 5
+    syncOptions:
+    - PruneLast=true
+    - ApplyOutOfSyncOnly=true
+    - ServerSideApply=true

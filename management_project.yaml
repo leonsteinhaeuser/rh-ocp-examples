@@ -24,6 +24,9 @@ spec:
     namespace: example-application-progressive
     server: https://kubernetes.default.svc
   - name: in-cluster
+    namespace: hcp-operators
+    server: https://kubernetes.default.svc
+  - name: in-cluster
     namespace: example-application-helm-progressive
     server: https://kubernetes.default.svc
   namespaceResourceWhitelist:

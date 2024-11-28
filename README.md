@@ -38,7 +38,7 @@ To do this, execute the following patch command:
 ```bash
 oc -n openshift-gitops patch argocds.argoproj.io openshift-gitops \
   --type merge \
-  --patch '{"spec":{"sourceNamespaces":["openshift-gitops","example-application-basic","example-application-basic-servicemesh","example-application-progressive","example-application-helm-basic","example-application-helm-progressive"]}}'
+  --patch '{"spec":{"sourceNamespaces":["openshift-gitops","example-application-basic","example-application-basic-servicemesh","example-application-progressive","example-application-helm-basic","example-application-helm-progressive","hcp-operators"]}}'
 ```
 
 The `openshift-gitops` namespace is the `default` namespace and might not be necessary to add to the `sourceNamespaces` list. However, it is added here for completeness.
