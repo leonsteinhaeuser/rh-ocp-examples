@@ -1,0 +1,33 @@
+services:
+  number:
+    hostname: number
+    build:
+      context: services/number
+      dockerfile: Containerfile
+    networks:
+      - backend
+  status:
+    hostname: status
+    build:
+      context: services/status
+      dockerfile: Containerfile
+    networks:
+      - backend
+  view:
+    hostname: view
+    build:
+      context: services/view
+      dockerfile: Containerfile
+    networks:
+      - backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - number
+      - status
+    environment:
+      NUMBER_SERVICE_URL: http://number:8081
+      STATUS_SERVICE_URL: http://status:8082/status
+
+networks:
+  backend:
